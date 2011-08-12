@@ -142,17 +142,20 @@ class SpeedReader(QDialog):
         :type path_to_file: string
 
         """
-        # Stop current timer if its running
-        self.timer.stop()
+        if content:
+            # Stop current timer if its running
+            self.timer.stop()
 
-        # Load and split the file
-        self.content = unicode(content).split()
+            # Load and split the file
+            self.content = unicode(content).split()
 
-        # Set the current word as 0
-        self.current = 0
+            # Set the current word as 0
+            self.current = 0
 
-        # Burn it!
-        self.timer.start(300)
+            # Burn it!
+            self.timer.start(300)
+        else:
+            self.loadContent('Please use a file which has contents')
 
     def _showNextWord(self):
         """ This function is an internal function to show next word in
