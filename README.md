@@ -1,7 +1,7 @@
 Apps
 ====
 
-Simple applications to make life easier.
+Simple applications to make life easier. (ACE Rocks)
 
 Available Apps:
 ---------------
