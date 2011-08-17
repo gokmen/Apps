@@ -39,8 +39,8 @@ class FunnyLabel(QWidget):
     def __init__(self, parent = None):
         """ Init Method
 
-            :param parent: Parent Widget
-            :type parent: QWidget
+        :param parent: Parent Widget
+        :type parent: QWidget
 
         """
         QWidget.__init__(self, parent)
@@ -84,7 +84,7 @@ class FunnyLabel(QWidget):
         if self.text:
 
             # Get container boundaries
-            wi = self.width()
+            wi = self.width() - 10
             he = self.height()
 
             # Calculate Font Point for Width & Height over base font values
@@ -175,21 +175,34 @@ if __name__ == '__main__':
     # We need arguments
     import os
     import sys
-    import argparse
 
-    parser = argparse.ArgumentParser(description='SpeedReader, read Plain Text files in easy&speed way')
-    parser.add_argument('to_read', help='FILE or TEXT to read')
+    # Python 2.6 or lower does not support argparse
+    # So, in old systems we may need to use sys.argv
+    try:
+        import argparse
+        parser = argparse.ArgumentParser(description='SpeedReader, read Plain Text files in easy&speed way')
+        parser.add_argument('file_or_text_to_read', help='FILE or TEXT to read')
+        args = parser.parse_args()
+        text_to_read = args.file_or_text_to_read
+    except ImportError:
+        if not len(sys.argv) == 2:
+            print "Usage: %s file_or_text_to_read" % sys.argv[0]
+            sys.exit(1)
+        text_to_read = sys.argv[1]
 
-    args = parser.parse_args()
+    # Read text
+    if os.path.exists(text_to_read):
+        content = unicode(file(text_to_read).read())
+    else:
+        content = unicode(text_to_read)
+
+    # Create an application instance
     app = QApplication(sys.argv)
 
     # Create an instance to run SpeedReader
     widget = SpeedReader()
     widget.resize(QSize(340, 180))
-    if os.path.exists(args.to_read):
-        widget.loadContent(file(args.to_read).read())
-    else:
-        widget.loadContent(unicode(args.to_read))
+    widget.loadContent(content)
     widget.show()
 
     # Fire!
